@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; form-action 'self'">
+<title>Landed cost and margin calculator for retailers and distributors · Open MSME</title>
+<meta name="description" content="Free landed cost calculator for retailers and distributors in India and the Philippines: turn supplier price, free goods, GST/VAT, freight and other costs into true landed cost, break-even and margin.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="Landed cost and margin calculator for retailers and distributors">
+<meta property="og:description" content="Turn a supplier price — with free goods, tax and freight — into true landed cost, break-even and your real margin at any selling price.">
+<meta property="og:type" content="website">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/accent.css">
+<script src="assets/theme-init.js"></script>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="./">
+      <span class="dot"></span>
+      <b>Open MSME</b>
+      <span class="tag">landed cost</span>
+    </a>
+    <span class="sp"></span>
+    <a class="home" href="https://sreenivas-sadhu-prabhakara.github.io/openmsme/">All tools</a>
+    <button class="themer" data-themer type="button">Theme</button>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div class="eyebrow">Retail &amp; distribution · India + Philippines</div>
+      <h1>Landed cost and margin calculator for retailers and distributors</h1>
+      <p class="lede">Turn a supplier price — with free goods, tax and freight — into true landed cost, break-even, and your real margin at any selling price.</p>
+      <div class="who">
+        <span class="pill">Kirana shops, distributors, resellers</span>
+        <span class="pill reg">GST / VAT input</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="cols calc">
+      <section class="card">
+        <h2>Inputs</h2>
+
+        <div class="field">
+          <label>Currency</label>
+          <div class="seg" id="seg-cur">
+            <button type="button" data-cur="INR" aria-pressed="true">₹ INR</button>
+            <button type="button" data-cur="PHP" aria-pressed="false">₱ PHP</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="purchase">Purchase price per unit</label>
+          <div class="inp has-pre">
+            <span class="pre cur">₹</span>
+            <input type="number" id="purchase" inputmode="decimal" min="0" step="any" value="100">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Free goods <span class="hint">lowers your effective unit cost</span></label>
+          <div class="row2">
+            <div class="field">
+              <label for="free">Units free</label>
+              <input type="number" id="free" inputmode="numeric" min="0" step="any" value="1">
+            </div>
+            <div class="field">
+              <label for="bought">Per units bought</label>
+              <input type="number" id="bought" inputmode="numeric" min="0" step="any" value="10">
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="gst">GST / VAT %</label>
+          <div class="inp has-suf">
+            <input type="number" id="gst" inputmode="decimal" min="0" step="any" value="18">
+            <span class="suf">%</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>GST / VAT recoverability <span class="hint">registered sellers can claim input tax</span></label>
+          <div class="seg" id="seg-rec">
+            <button type="button" data-rec="yes" aria-pressed="false">GST recoverable (ITC)</button>
+            <button type="button" data-rec="no" aria-pressed="true">Not recoverable</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="freight">Freight per unit</label>
+          <div class="inp has-pre">
+            <span class="pre cur">₹</span>
+            <input type="number" id="freight" inputmode="decimal" min="0" step="any" value="4">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="other">Other cost per unit <span class="hint">handling, packaging, losses</span></label>
+          <div class="inp has-pre">
+            <span class="pre cur">₹</span>
+            <input type="number" id="other" inputmode="decimal" min="0" step="any" value="2">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="mrp">Your selling price / MRP per unit <span class="hint">optional</span></label>
+          <div class="inp has-pre">
+            <span class="pre cur">₹</span>
+            <input type="number" id="mrp" inputmode="decimal" min="0" step="any" value="150">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="target">Target margin % <span class="hint">optional — for suggested price</span></label>
+          <div class="inp has-suf">
+            <input type="number" id="target" inputmode="decimal" min="0" max="99.99" step="any" value="25">
+            <span class="suf">%</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card sticky">
+        <h2>Result</h2>
+        <div class="result-primary">
+          <div class="k">True landed cost per unit</div>
+          <div class="v" id="r-landed">—</div>
+          <div class="sub" id="r-sub">Break-even —</div>
+        </div>
+
+        <table class="breakdown">
+          <tbody>
+            <tr>
+              <td>Effective purchase <span class="hint">after free goods</span></td>
+              <td class="num" id="b-eff">—</td>
+            </tr>
+            <tr id="b-gst-row">
+              <td id="b-gst-label">GST / VAT</td>
+              <td class="num" id="b-gst">—</td>
+            </tr>
+            <tr>
+              <td>Freight</td>
+              <td class="num" id="b-freight">—</td>
+            </tr>
+            <tr>
+              <td>Other cost</td>
+              <td class="num" id="b-other">—</td>
+            </tr>
+            <tr class="total">
+              <td>Landed cost</td>
+              <td class="num" id="b-total">—</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="sellblock" id="sellblock" hidden>
+          <h3 class="blockhead">At your selling price</h3>
+          <table class="breakdown">
+            <tbody>
+              <tr>
+                <td>Margin on selling price</td>
+                <td class="num" id="m-margin">—</td>
+              </tr>
+              <tr>
+                <td>Markup on cost</td>
+                <td class="num" id="m-markup">—</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="note" id="neg-warn" hidden>Your selling price is below landed cost — every unit sold loses money.</div>
+        </div>
+
+        <div class="suggest" id="suggest" hidden>
+          <table class="breakdown">
+            <tbody>
+              <tr class="total">
+                <td>Suggested price for <span id="s-target">—</span>% margin</td>
+                <td class="num" id="s-srp">—</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="btnrow">
+          <button class="btn ghost" id="print" type="button">Print / Save PDF</button>
+          <button class="btn ghost" id="reset" type="button">Reset</button>
+        </div>
+      </section>
+    </div>
+
+    <section class="prose">
+      <h2>How it works</h2>
+      <p>Free goods make each unit cheaper than its sticker price. If you buy 10 and get 1 free, you pay for 10 but hold 11, so your <strong>effective purchase</strong> is <code>price × bought ÷ (bought + free)</code> per unit.</p>
+      <p>Tax is added to that effective cost only when it is a real cost to you. If you are <strong>not registered</strong> (or cannot claim input tax), GST / VAT is money you never get back, so it is included in landed cost. If you are registered and the tax is <strong>recoverable</strong> as input tax credit, it is excluded — you reclaim it, so it is not part of your cost. Pick the toggle that matches your registration.</p>
+      <p>Your <strong>landed cost</strong> is then effective purchase + tax (when it is a cost) + freight + other cost per unit. That is also your <strong>break-even</strong>: sell below it and you lose money on every unit.</p>
+      <p>Two ways to read profit: <strong>margin on selling price</strong> is <code>(price − landed) ÷ price</code> — the share of each sale you keep. <strong>Markup on cost</strong> is <code>(price − landed) ÷ landed</code> — how much you add on top of cost. Markup is always the bigger number; a 25% margin is a 33% markup.</p>
+      <p>The suggested price works backwards from a target margin on the selling price: <code>landed ÷ (1 − target%)</code>.</p>
+
+      <details class="assumptions">
+        <summary>Assumptions &amp; method</summary>
+        <ul>
+          <li>Free goods are modelled as a lower <strong>effective unit cost</strong>, not as extra revenue.</li>
+          <li>GST / VAT is a flat percentage of the effective purchase price only (freight and other cost are entered tax-inclusive).</li>
+          <li>Recoverable GST / VAT (input tax credit) is <strong>excluded</strong> from landed cost; non-recoverable tax is included.</li>
+          <li>Margin % is measured on the <strong>selling price</strong>; markup % is measured on <strong>cost</strong>.</li>
+          <li>Suggested price uses target margin on the selling price, valid for a target below 100%.</li>
+          <li>All amounts are per unit, in the currency you select. Empty fields count as zero; units bought defaults to 1.</li>
+        </ul>
+      </details>
+
+      <div class="note">Whether GST / VAT is a cost depends on your registration — pick the toggle that matches you. This is a planning estimate, not tax or accounting advice; confirm rates and input-tax eligibility with your invoice and a qualified adviser.</div>
+    </section>
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <span>Open MSME · open-source tool for MSMEs in India &amp; the Philippines · MIT</span>
+    <span><a href="https://sreenivas-sadhu-prabhakara.github.io/openmsme/">All tools</a></span>
+  </div>
+</footer>
+
+<script src="assets/ui.js"></script>
+<script src="assets/calc.js"></script>
+</body>
+</html>
